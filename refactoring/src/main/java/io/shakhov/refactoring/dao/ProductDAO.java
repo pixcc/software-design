@@ -55,4 +55,52 @@ public class ProductDAO {
         }
         return products;
     }
+
+    public Product getProductWithMaxPrice() {
+        return getProductByQuery("SELECT * FROM product ORDER BY price DESC LIMIT 1");
+    }
+
+    public Product getProductWithMinPrice() {
+        return getProductByQuery("SELECT * FROM product ORDER BY price LIMIT 1");
+    }
+
+    private Product getProductByQuery(String query) {
+        try (Connection c = DriverManager.getConnection(DB_URL)) {
+            try (Statement stmt = c.createStatement()) {
+                ResultSet rs = stmt.executeQuery(query);
+                if (rs.next()) {
+                    String name = rs.getString("name");
+                    long price = rs.getInt("price");
+                    return new Product(name, price);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer getSummaryPrice() {
+        return getStatisticByQuery("SELECT SUM(price) FROM product");
+    }
+
+    public Integer getNumberOfProducts() {
+        return getStatisticByQuery("SELECT COUNT(*) FROM product");
+    }
+
+    private Integer getStatisticByQuery(String query) {
+        try (Connection c = DriverManager.getConnection(DB_URL)) {
+            try (Statement stmt = c.createStatement()) {
+                ResultSet rs = stmt.executeQuery(query);
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
