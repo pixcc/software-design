@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import io.shakhov.refactoring.dao.ProductDAO;
 import io.shakhov.refactoring.model.Product;
-import io.shakhov.refactoring.net.HttpUtils;
+import io.shakhov.refactoring.response.ResponseCreator;
 
 
 public class AddProductServlet extends HttpServlet {
@@ -22,7 +22,6 @@ public class AddProductServlet extends HttpServlet {
         String name = request.getParameter("name");
         long price = Long.parseLong(request.getParameter("price"));
         productDAO.addProduct(new Product(name, price));
-        response.getWriter().println("OK");
-        HttpUtils.htmlOk(response);
+        ResponseCreator.rawString("OK", response);
     }
 }
