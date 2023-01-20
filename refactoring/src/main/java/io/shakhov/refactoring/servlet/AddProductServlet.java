@@ -1,14 +1,11 @@
 package io.shakhov.refactoring.servlet;
 
-import io.shakhov.refactoring.dao.ProductDAO;
-import io.shakhov.refactoring.model.Product;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import io.shakhov.refactoring.dao.ProductDAO;
+import io.shakhov.refactoring.model.Product;
 
 
 public class AddProductServlet extends HttpServlet {
