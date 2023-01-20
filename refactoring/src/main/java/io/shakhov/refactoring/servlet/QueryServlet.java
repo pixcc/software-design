@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import io.shakhov.refactoring.dao.ProductDAO;
 import io.shakhov.refactoring.model.Product;
+import io.shakhov.refactoring.net.HttpUtils;
 
 
 public class QueryServlet extends HttpServlet {
@@ -34,8 +35,7 @@ public class QueryServlet extends HttpServlet {
         } else {
             response.getWriter().println("Unknown command: " + command);
         }
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        HttpUtils.htmlOk(response);
     }
 
 

@@ -1,10 +1,11 @@
 package io.shakhov.refactoring.servlet;
 
-import io.shakhov.refactoring.dao.ProductDAO;
-import io.shakhov.refactoring.model.Product;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import io.shakhov.refactoring.dao.ProductDAO;
+import io.shakhov.refactoring.model.Product;
+import io.shakhov.refactoring.net.HttpUtils;
 
 
 public class GetProductsServlet extends HttpServlet {
@@ -26,7 +27,6 @@ public class GetProductsServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        HttpUtils.htmlOk(response);
     }
 }
