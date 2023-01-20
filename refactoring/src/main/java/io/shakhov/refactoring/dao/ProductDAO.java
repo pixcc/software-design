@@ -40,20 +40,7 @@ public class ProductDAO {
     }
 
     public List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
-        try (Connection c = DriverManager.getConnection(DB_URL)) {
-            try (Statement stmt = c.createStatement()) {
-                ResultSet rs = stmt.executeQuery("SELECT * FROM product");
-                while (rs.next()) {
-                    String name = rs.getString("name");
-                    long price = rs.getLong("price");
-                    products.add(new Product(name, price));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return products;
+        return getProductsByQuery("SELECT * FROM product");
     }
 
     public Product getProductWithMaxPrice() {
@@ -65,20 +52,29 @@ public class ProductDAO {
     }
 
     private Product getProductByQuery(String query) {
+        List<Product> products = getProductsByQuery(query);
+        if (!products.isEmpty()) {
+            return products.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    private List<Product> getProductsByQuery(String query) {
+        List<Product> products = new ArrayList<>();
         try (Connection c = DriverManager.getConnection(DB_URL)) {
             try (Statement stmt = c.createStatement()) {
                 ResultSet rs = stmt.executeQuery(query);
-                if (rs.next()) {
+                while (rs.next()) {
                     String name = rs.getString("name");
-                    long price = rs.getInt("price");
-                    return new Product(name, price);
-                } else {
-                    return null;
+                    long price = rs.getLong("price");
+                    products.add(new Product(name, price));
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return products;
     }
 
     public Integer getSummaryPrice() {
